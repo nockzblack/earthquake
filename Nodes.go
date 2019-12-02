@@ -52,11 +52,11 @@ func main(){
 		"-------------Start run ------------------\n" +
 		"-----------------------------------------")
 
-	mapa := Map{nil, 7, 7, nil}
-	matrix := readFile("/home/alexis/go/src/EarthquakeSimulator/Main/mapita.csv", mapa.width, mapa.height)
+	mapa := Map{nil, 16, 12, nil}
+	matrix := readFile("/home/alexis/go/src/EarthquakeSimulator/Main/mapitaWrande.csv", mapa.width, mapa.height)
 	mapa.nodes = convertToNodes(matrix, 3, mapa.width, mapa.height)
-	for i := 0;i<7;i++{
-		for j := 0; j < 7; j++ {
+	/*for i := 0;i<len(mapa.nodes);i++{
+		for j := 0; j < len(mapa.nodes[i]); j++ {
 			if mapa.nodes[i][j] == nil {
 				fmt.Print(0)
 			}else if mapa.nodes[i][j].isExit{
@@ -74,18 +74,22 @@ func main(){
 			}
 		}
 	}
-	for i := 0;i<7;i++{
-		for j := 0; j < 7; j++ {
+	for i := 0;i<len(mapa.nodes);i++{
+		for j := 0; j < len(mapa.nodes[i]); j++ {
 			if mapa.nodes[i][j] == nil {
-				fmt.Print("-",0,"-")
+				fmt.Print("--",0,"-")
 			}else if mapa.nodes[i][j].isExit{
-				fmt.Print("-S-")
+				fmt.Print("--S-")
 			}else {
-				fmt.Print("-",mapa.nodes[i][j].stepsToExit,"-")
+				if mapa.nodes[i][j] .stepsToExit < 10{
+					fmt.Print("--",mapa.nodes[i][j].stepsToExit,"-")
+				}else{
+					fmt.Print("-",mapa.nodes[i][j].stepsToExit,"-")
+				}
 			}
 		}
 		fmt.Println()
-	}
+	}*/
 	fmt.Println("-----------------------------------------\n" +
 		"--------------End run ------------------\n" +
 		"-----------------------------------------")
@@ -93,9 +97,9 @@ func main(){
 
 func readFile (path string, width int, height int) [][]int{
 	// create the arrays needed
-	matrix := make([][]int, width)
+	matrix := make([][]int, height)
 	for i := range matrix {
-		matrix[i] = make([]int, height)
+		matrix[i] = make([]int, width)
 	}
 
 	// create the file and verify errors
@@ -116,7 +120,7 @@ func readFile (path string, width int, height int) [][]int{
 		if err != nil {
 			log.Fatal(err)
 		}
-		for j := 0; j < height; j++{
+		for j := 0; j < width; j++{
 			matrix[i][j], err = strconv.Atoi(line[j])
 		}
 	}
@@ -255,7 +259,7 @@ func (q *Queue) pop() *Node{
 }
 
 func distanciasDeSalida(salida *Node, nodos [][]*Node){
-	cola := NewQueue(len(nodos)*len(nodos[0]), 0, 0)
+	cola := NewQueue(10000, 0, 0)
 	currentDist := 0
 	salida.stepsToExit = currentDist
 	cola.add(salida)
