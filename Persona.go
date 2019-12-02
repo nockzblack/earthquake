@@ -52,14 +52,14 @@ func (p *Persona) setPos(node *Node) {
 func (p *Persona) walk(wg *sync.WaitGroup) {
 	
 	for (p.pos.isExit != true) {
-		fmt.Printf("Person %d is in node %d\n", p.id, p.pos.name)
-		fmt.Printf("Person %d has started to move to %d\n", p.id, p.pos.nextHop.name)
+		//fmt.Printf("Person %d is in node %d\n", p.id, p.pos.name)
+		//fmt.Printf("Person %d has started to move to %d\n", p.id, p.pos.nextHop.name)
 
 		p.pos.nextHop.mux.Lock() // move right foot
 		time.Sleep(time.Duration(p.speed) * time.Second)
 		p.pos.mux.Unlock() // set free the origin node
 		p.pos = p.pos.nextHop
-		fmt.Printf("Person %d just moved to node %d\n", p.id, p.pos.name)
+		//fmt.Printf("Person %d just moved to node %d\n", p.id, p.pos.name)
 	}
 
 	fmt.Printf("Person %d is out of danger\n", p.id)
@@ -75,40 +75,44 @@ func main() {
 	//fmt.Println(p.speed)
 
 	var wg sync.WaitGroup
-	var myMap [10]*Node
+	var myMap [100]*Node
 
 	// making nodes
-	for index := 0; index < 10; index++ {
+	for index := 0; index < len(myMap); index++ {
 		myMap[index] = newNode(false, false, 10, index)
 		
 	}
 
 	// making map -> next hope
-	var next = myMap[9]
-	for index := 8; index >= 0; index-- {
+	var next = myMap[len(myMap)-1]
+	for index := len(myMap)-2; index >= 0; index-- {
 		myMap[index].nextHop = next
 		next = myMap[index]
 	}
-	myMap[9].isExit = true;
+	myMap[len(myMap)-1].isExit = true;
 	
 	// making people
-	var people [3]Persona
-	for index := 1; index < 4; index++ {
-		people[index-1] = Persona{float32(index/2), index, true, nil}
+	var people [10]Persona
+	for index := 1; index < len(people)+1; index++ {
+		people[index-1] = Persona{float32(index/5), index, true, nil}
 	}
 
 	people[0].setPos(myMap[0])
-	people[1].setPos(myMap[1])
+	people[1].setPos(myMap[10])
+	people[2].setPos(myMap[50])
+	people[3].setPos(myMap[1])
+	people[4].setPos(myMap[66])
+	people[5].setPos(myMap[1])
+	people[6].setPos(myMap[0])
+	people[7].setPos(myMap[88])
+	people[8].setPos(myMap[41])
+	people[9].setPos(myMap[14])
 
-	people[1].speed = 0.2
-	people[0].speed = 2
-
-	go people[0].walk(&wg)
-	wg.Add(1)
-	go people[1].walk(&wg)
-	wg.Add(1)
-
-
+	for index := 0; index < 10; index++ {
+		go people[index].walk(&wg)
+		wg.Add(1)
+	}
+	
 	wg.Wait()
 
 }
