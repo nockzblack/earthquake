@@ -35,7 +35,19 @@ func NewNode(isExit bool, isBorder bool, stepsToExit int) *Node {
 	return &Node{isExit: isExit, isBorder: isBorder, stepsToExit: stepsToExit}
 }
 
+<<<<<<< HEAD
 // Map for map
+=======
+func (n *Node) getNext() []*Node{
+	array := make([]*Node, 4)
+	array[0] = n.front
+	array[1] = n.right
+	array[2] = n.back
+	array[3] = n.left
+	return array
+}
+
+>>>>>>> f2448b85471a48473addc5ddd8da5c085cdf7a78
 type Map struct {
 	nodes         [][]*Node
 	height, width int
@@ -48,13 +60,15 @@ func main(){
 		"-------------Start run ------------------\n" +
 		"-----------------------------------------")
 
-	mapa := Map{nil, 7, 7, nil}
-	matrix := readFile("/home/alexis/go/src/EarthquakeSimulator/Main/mapita.csv", mapa.width, mapa.height)
+	mapa := Map{nil, 16, 12, nil}
+	matrix := readFile("/home/alexis/go/src/EarthquakeSimulator/Main/mapitaWrande.csv", mapa.width, mapa.height)
 	mapa.nodes = convertToNodes(matrix, 3, mapa.width, mapa.height)
-	for i := 0;i<7;i++{
-		for j := 0; j < 7; j++ {
+	/*for i := 0;i<len(mapa.nodes);i++{
+		for j := 0; j < len(mapa.nodes[i]); j++ {
 			if mapa.nodes[i][j] == nil {
 				fmt.Print(0)
+			}else if mapa.nodes[i][j].isExit{
+				fmt.Print(2)
 			}else{
 				fmt.Print(1)
 			}
@@ -63,12 +77,27 @@ func main(){
 	}
 	for i := 0;i<7;i++{
 		for j := 0; j < 7; j++ {
-
 			if mapa.nodes[i][j] != nil && mapa.nodes[i][j].isExit{
 				fmt.Println(i, j)
 			}
 		}
 	}
+	for i := 0;i<len(mapa.nodes);i++{
+		for j := 0; j < len(mapa.nodes[i]); j++ {
+			if mapa.nodes[i][j] == nil {
+				fmt.Print("--",0,"-")
+			}else if mapa.nodes[i][j].isExit{
+				fmt.Print("--S-")
+			}else {
+				if mapa.nodes[i][j] .stepsToExit < 10{
+					fmt.Print("--",mapa.nodes[i][j].stepsToExit,"-")
+				}else{
+					fmt.Print("-",mapa.nodes[i][j].stepsToExit,"-")
+				}
+			}
+		}
+		fmt.Println()
+	}*/
 	fmt.Println("-----------------------------------------\n" +
 		"--------------End run ------------------\n" +
 		"-----------------------------------------")
@@ -77,9 +106,9 @@ func main(){
 
 func readFile(path string, width int, height int) [][]int {
 	// create the arrays needed
-	matrix := make([][]int, width)
+	matrix := make([][]int, height)
 	for i := range matrix {
-		matrix[i] = make([]int, height)
+		matrix[i] = make([]int, width)
 	}
 
 	// create the file and verify errors
@@ -100,7 +129,11 @@ func readFile(path string, width int, height int) [][]int {
 		if err != nil {
 			log.Fatal(err)
 		}
+<<<<<<< HEAD
 		for j := 0; j < height; j++ {
+=======
+		for j := 0; j < width; j++{
+>>>>>>> f2448b85471a48473addc5ddd8da5c085cdf7a78
 			matrix[i][j], err = strconv.Atoi(line[j])
 		}
 	}
@@ -181,7 +214,12 @@ func generarSalidas(numSalidas int, width int, height int, nodes [][]*Node) {
 			r = rand.Intn(len(nodes[i]))
 			if nodes[0][r] != nil {
 				nodes[0][r].isExit = true
+<<<<<<< HEAD
 			} else {
+=======
+				distanciasDeSalida(nodes[0][r], nodes)
+			}else{
+>>>>>>> f2448b85471a48473addc5ddd8da5c085cdf7a78
 				i--
 				continue
 			}
@@ -189,7 +227,12 @@ func generarSalidas(numSalidas int, width int, height int, nodes [][]*Node) {
 			r = rand.Intn(len(nodes[i]))
 			if nodes[len(nodes)-1][r] != nil {
 				nodes[len(nodes)-1][r].isExit = true
+<<<<<<< HEAD
 			} else {
+=======
+				distanciasDeSalida(nodes[len(nodes)-1][r], nodes)
+			}else{
+>>>>>>> f2448b85471a48473addc5ddd8da5c085cdf7a78
 				i--
 				continue
 			}
@@ -197,7 +240,12 @@ func generarSalidas(numSalidas int, width int, height int, nodes [][]*Node) {
 			r = rand.Intn(len(nodes))
 			if nodes[r][0] != nil {
 				nodes[r][0].isExit = true
+<<<<<<< HEAD
 			} else {
+=======
+				distanciasDeSalida(nodes[r][0], nodes)
+			}else{
+>>>>>>> f2448b85471a48473addc5ddd8da5c085cdf7a78
 				i--
 				continue
 			}
@@ -205,7 +253,12 @@ func generarSalidas(numSalidas int, width int, height int, nodes [][]*Node) {
 			r = rand.Intn(len(nodes))
 			if nodes[r][len(nodes[i])-1] != nil {
 				nodes[r][len(nodes[i])-1].isExit = true
+<<<<<<< HEAD
 			} else {
+=======
+				distanciasDeSalida(nodes[r][len(nodes[i])-1], nodes)
+			}else{
+>>>>>>> f2448b85471a48473addc5ddd8da5c085cdf7a78
 				i--
 				continue
 			}
@@ -213,7 +266,53 @@ func generarSalidas(numSalidas int, width int, height int, nodes [][]*Node) {
 	}
 }
 
+<<<<<<< HEAD
 // Dijkstra for dijis
 func Dijkstra(salida *Node) {
+=======
+type Queue struct {
+	queue []*Node
+	lastPos int
+	current int
+}
+>>>>>>> f2448b85471a48473addc5ddd8da5c085cdf7a78
 
+func NewQueue(size, lastPos int, current int) *Queue {
+	queue := make([]*Node, size)
+	return &Queue{queue: queue, lastPos: lastPos, current: current}
+}
+
+func (q *Queue) add(node *Node){
+	q.queue[q.lastPos] = node
+	q.lastPos++
+}
+
+func (q *Queue) pop() *Node{
+	q.current++
+	return q.queue[q.current-1]
+}
+
+func distanciasDeSalida(salida *Node, nodos [][]*Node){
+	cola := NewQueue(10000, 0, 0)
+	currentDist := 0
+	salida.stepsToExit = currentDist
+	cola.add(salida)
+	for cola.current < cola.lastPos{
+		currentNode := cola.pop()
+		// Incrementar currentDist
+		if currentDist < currentNode.stepsToExit{
+			currentDist++
+		}
+		nextNodes := currentNode.getNext()
+		for i := 0; i < 4; i++{
+			if nextNodes[i] == nil{
+				continue
+			}
+			if currentDist < nextNodes[i].stepsToExit{
+				nextNodes[i].stepsToExit = currentDist+1
+				nextNodes[i].nextHop = currentNode
+				cola.add(nextNodes[i])
+			}
+		}
+	}
 }
