@@ -13,6 +13,7 @@ import (
 	"time"
 )
 
+// Person type
 type Person struct {
 	speed   int
 	ID      string
@@ -20,24 +21,28 @@ type Person struct {
 	current Node
 }
 
+// Node type
 type Node struct {
 	left, front, right,
-	back, nextHop 		*Node
-	mux					sync.Mutex
-	isExit, isBorder	bool
-	stepsToExit			int
+	back, nextHop *Node
+	mux              sync.Mutex
+	isExit, isBorder bool
+	stepsToExit      int
 }
 
+// NewNode creates nodes
 func NewNode(isExit bool, isBorder bool, stepsToExit int) *Node {
 	return &Node{isExit: isExit, isBorder: isBorder, stepsToExit: stepsToExit}
 }
 
+// Map for map
 type Map struct {
-	nodes 		   [][]*Node
+	nodes         [][]*Node
 	height, width int
-	people [][]    Person
+	people        [][]Person
 }
 
+/*
 func main(){
 	fmt.Println("-----------------------------------------\n" +
 		"-------------Start run ------------------\n" +
@@ -68,8 +73,9 @@ func main(){
 		"--------------End run ------------------\n" +
 		"-----------------------------------------")
 }
+*/
 
-func readFile (path string, width int, height int) [][]int{
+func readFile(path string, width int, height int) [][]int {
 	// create the arrays needed
 	matrix := make([][]int, width)
 	for i := range matrix {
@@ -78,7 +84,7 @@ func readFile (path string, width int, height int) [][]int{
 
 	// create the file and verify errors
 	mapFile, err := os.Open(path)
-	if err != nil{
+	if err != nil {
 		log.Fatalln("Couldn't open the csv file", err)
 	}
 
@@ -86,7 +92,7 @@ func readFile (path string, width int, height int) [][]int{
 	buffer := csv.NewReader(bufio.NewReader(mapFile))
 
 	// Reads a line per iteration and get the int values
-	for i := 0; i < height; i++{
+	for i := 0; i < height; i++ {
 		line, err := buffer.Read()
 		if err == io.EOF {
 			break
@@ -94,7 +100,7 @@ func readFile (path string, width int, height int) [][]int{
 		if err != nil {
 			log.Fatal(err)
 		}
-		for j := 0; j < height; j++{
+		for j := 0; j < height; j++ {
 			matrix[i][j], err = strconv.Atoi(line[j])
 		}
 	}
@@ -111,14 +117,14 @@ func convertToNodes(matrix [][]int, numSalidas int, width int, height int) [][]*
 	// First all Nodes are created without reference to other nodes
 	for i := 0; i < len(matrix); i++ {
 		for j := 0; j < len(matrix[i]); j++ {
-			if matrix[i][j] == 0{
+			if matrix[i][j] == 0 {
 				nodos[i][j] = nil
 				continue
 			}
-			if i == 0 || j == 0 || i == len(matrix)-1 || j == len(matrix[i])-1{
-				nodos[i][j] = NewNode(false,true, 1000)
-			}else {
-				nodos[i][j] = NewNode(false,false, 1000)
+			if i == 0 || j == 0 || i == len(matrix)-1 || j == len(matrix[i])-1 {
+				nodos[i][j] = NewNode(false, true, 1000)
+			} else {
+				nodos[i][j] = NewNode(false, false, 1000)
 			}
 		}
 	}
@@ -128,30 +134,30 @@ func convertToNodes(matrix [][]int, numSalidas int, width int, height int) [][]*
 	 i j --- >
 	 |
 	 v
-	 */
-	for i := range nodos{
-		for j := range nodos[i]{
-			if nodos[i][j] == nil{
+	*/
+	for i := range nodos {
+		for j := range nodos[i] {
+			if nodos[i][j] == nil {
 				continue
 			}
-			if i-1 >= 0{
+			if i-1 >= 0 {
 				nodos[i][j].front = nodos[i-1][j]
-			}else{
+			} else {
 				nodos[i][j].front = nil
 			}
-			if i+1 < len(nodos){
+			if i+1 < len(nodos) {
 				nodos[i][j].back = nodos[i+1][j]
-			}else{
+			} else {
 				nodos[i][j].back = nil
 			}
 			if j-1 >= 0 {
 				nodos[i][j].left = nodos[i][j-1]
-			}else{
+			} else {
 				nodos[i][j].left = nil
 			}
-			if j+1 < len(nodos[i]){
+			if j+1 < len(nodos[i]) {
 				nodos[i][j].right = nodos[i][j+1]
-			}else {
+			} else {
 				nodos[i][j].right = nil
 			}
 		}
@@ -160,46 +166,46 @@ func convertToNodes(matrix [][]int, numSalidas int, width int, height int) [][]*
 	return nodos
 }
 
-func generarSalidas(numSalidas int, width int, height int, nodes [][]*Node){
-	if numSalidas > width*height-height{
+func generarSalidas(numSalidas int, width int, height int, nodes [][]*Node) {
+	if numSalidas > width*height-height {
 		fmt.Println("El número de salidas es muy grande")
 		os.Exit(1)
 	}
 
 	var r int = numSalidas
-	for i := 0; i < numSalidas; i++{
+	for i := 0; i < numSalidas; i++ {
 		rand.Seed(time.Now().UTC().UnixNano())
 		r = rand.Int()
-		if r%4 == 0{
+		if r%4 == 0 {
 			// Estaran sobre el eje x hasta arriba
 			r = rand.Intn(len(nodes[i]))
 			if nodes[0][r] != nil {
 				nodes[0][r].isExit = true
-			}else{
+			} else {
 				i--
 				continue
 			}
-		}else if r%4 == 1 {
+		} else if r%4 == 1 {
 			r = rand.Intn(len(nodes[i]))
 			if nodes[len(nodes)-1][r] != nil {
 				nodes[len(nodes)-1][r].isExit = true
-			}else{
+			} else {
 				i--
 				continue
 			}
-		}else if r%4 == 2 {
+		} else if r%4 == 2 {
 			r = rand.Intn(len(nodes))
 			if nodes[r][0] != nil {
 				nodes[r][0].isExit = true
-			}else{
+			} else {
 				i--
 				continue
 			}
-		}else{
+		} else {
 			r = rand.Intn(len(nodes))
 			if nodes[r][len(nodes[i])-1] != nil {
 				nodes[r][len(nodes[i])-1].isExit = true
-			}else{
+			} else {
 				i--
 				continue
 			}
@@ -207,6 +213,7 @@ func generarSalidas(numSalidas int, width int, height int, nodes [][]*Node){
 	}
 }
 
-func Dijkstra(salida *Node){
+// Dijkstra for dijis
+func Dijkstra(salida *Node) {
 
 }
