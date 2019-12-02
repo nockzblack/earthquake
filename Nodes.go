@@ -74,6 +74,18 @@ func main(){
 			}
 		}
 	}
+	for i := 0;i<7;i++{
+		for j := 0; j < 7; j++ {
+			if mapa.nodes[i][j] == nil {
+				fmt.Print("-",0,"-")
+			}else if mapa.nodes[i][j].isExit{
+				fmt.Print("-S-")
+			}else {
+				fmt.Print("-",mapa.nodes[i][j].stepsToExit,"-")
+			}
+		}
+		fmt.Println()
+	}
 	fmt.Println("-----------------------------------------\n" +
 		"--------------End run ------------------\n" +
 		"-----------------------------------------")
@@ -185,6 +197,7 @@ func generarSalidas(numSalidas int, width int, height int, nodes [][]*Node){
 			r = rand.Intn(len(nodes[i]))
 			if nodes[0][r] != nil {
 				nodes[0][r].isExit = true
+				distanciasDeSalida(nodes[0][r], nodes)
 			}else{
 				i--
 				continue
@@ -193,6 +206,7 @@ func generarSalidas(numSalidas int, width int, height int, nodes [][]*Node){
 			r = rand.Intn(len(nodes[i]))
 			if nodes[len(nodes)-1][r] != nil {
 				nodes[len(nodes)-1][r].isExit = true
+				distanciasDeSalida(nodes[len(nodes)-1][r], nodes)
 			}else{
 				i--
 				continue
@@ -201,6 +215,7 @@ func generarSalidas(numSalidas int, width int, height int, nodes [][]*Node){
 			r = rand.Intn(len(nodes))
 			if nodes[r][0] != nil {
 				nodes[r][0].isExit = true
+				distanciasDeSalida(nodes[r][0], nodes)
 			}else{
 				i--
 				continue
@@ -209,6 +224,7 @@ func generarSalidas(numSalidas int, width int, height int, nodes [][]*Node){
 			r = rand.Intn(len(nodes))
 			if nodes[r][len(nodes[i])-1] != nil {
 				nodes[r][len(nodes[i])-1].isExit = true
+				distanciasDeSalida(nodes[r][len(nodes[i])-1], nodes)
 			}else{
 				i--
 				continue
@@ -245,14 +261,17 @@ func distanciasDeSalida(salida *Node, nodos [][]*Node){
 	cola.add(salida)
 	for cola.current < cola.lastPos{
 		currentNode := cola.pop()
-		currentDist++
+		// Incrementar currentDist
+		if currentDist < currentNode.stepsToExit{
+			currentDist++
+		}
 		nextNodes := currentNode.getNext()
 		for i := 0; i < 4; i++{
 			if nextNodes[i] == nil{
 				continue
 			}
 			if currentDist < nextNodes[i].stepsToExit{
-				nextNodes[i].stepsToExit = currentDist
+				nextNodes[i].stepsToExit = currentDist+1
 				nextNodes[i].nextHop = currentNode
 				cola.add(nextNodes[i])
 			}
