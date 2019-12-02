@@ -32,6 +32,15 @@ func NewNode(isExit bool, isBorder bool, stepsToExit int) *Node {
 	return &Node{isExit: isExit, isBorder: isBorder, stepsToExit: stepsToExit}
 }
 
+func (n *Node) getNext() []*Node{
+	array := make([]*Node, 4)
+	array[0] = n.front
+	array[1] = n.right
+	array[2] = n.back
+	array[3] = n.left
+	return array
+}
+
 type Map struct {
 	nodes 		   [][]*Node
 	height, width int
@@ -50,6 +59,8 @@ func main(){
 		for j := 0; j < 7; j++ {
 			if mapa.nodes[i][j] == nil {
 				fmt.Print(0)
+			}else if mapa.nodes[i][j].isExit{
+				fmt.Print(2)
 			}else{
 				fmt.Print(1)
 			}
@@ -58,7 +69,6 @@ func main(){
 	}
 	for i := 0;i<7;i++{
 		for j := 0; j < 7; j++ {
-
 			if mapa.nodes[i][j] != nil && mapa.nodes[i][j].isExit{
 				fmt.Println(i, j)
 			}
@@ -207,6 +217,45 @@ func generarSalidas(numSalidas int, width int, height int, nodes [][]*Node){
 	}
 }
 
-func Dijkstra(salida *Node){
+type Queue struct {
+	queue []*Node
+	lastPos int
+	current int
+}
 
+func NewQueue(size, lastPos int, current int) *Queue {
+	queue := make([]*Node, size)
+	return &Queue{queue: queue, lastPos: lastPos, current: current}
+}
+
+func (q *Queue) add(node *Node){
+	q.queue[q.lastPos] = node
+	q.lastPos++
+}
+
+func (q *Queue) pop() *Node{
+	q.current++
+	return q.queue[q.current-1]
+}
+
+func distanciasDeSalida(salida *Node, nodos [][]*Node){
+	cola := NewQueue(len(nodos)*len(nodos[0]), 0, 0)
+	currentDist := 0
+	salida.stepsToExit = currentDist
+	cola.add(salida)
+	for cola.current < cola.lastPos{
+		currentNode := cola.pop()
+		currentDist++
+		nextNodes := currentNode.getNext()
+		for i := 0; i < 4; i++{
+			if nextNodes[i] == nil{
+				continue
+			}
+			if currentDist < nextNodes[i].stepsToExit{
+				nextNodes[i].stepsToExit = currentDist
+				nextNodes[i].nextHop = currentNode
+				cola.add(nextNodes[i])
+			}
+		}
+	}
 }
