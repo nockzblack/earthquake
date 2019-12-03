@@ -19,19 +19,31 @@ import (
 type Map struct {
 	nodes         [][]*Node
 	height, width int
+	exitDoors int
+	path string
+}
+
+
+func newMapa(exitDoors int, path string, height int, width int) *Map {
+	return &Map{
+		height: height,
+		width: width,
+		exitDoors: exitDoors,
+		path: path,
+	}
 }
 
 
 
-func initializeMap(exitDoors int, path string) {
+func (mapa *Map) initializeMap() {
 	
 	fmt.Println("-----------------------------------------\n" +
 		"-------------Start run ------------------\n" +
 		"-----------------------------------------")
 
-	mapa := Map{nil, 12, 16}
-	matrix := readFile(path, mapa.width, mapa.height)
-	mapa.nodes = convertToNodes(matrix, exitDoors, mapa.width, mapa.height)
+	//mapa := Map{nil, 16, 12}
+	matrix := readFile(mapa.path, mapa.width, mapa.height)
+	mapa.nodes = convertToNodes(matrix, mapa.exitDoors, mapa.width, mapa.height)
 
 	for i := 0;i<len(mapa.nodes);i++{
 		for j := 0; j < len(mapa.nodes[i]); j++ {
