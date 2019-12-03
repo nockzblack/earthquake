@@ -62,7 +62,7 @@ func (pm *PersonManager) runSimulation() {
 	pm.setPeoplePos()
 	go pm.startTimer(pm.seconds)
 	pm.startWalking()
-	pm.wg.Wait()
+	//pm.wg.Wait()
 }
 
 

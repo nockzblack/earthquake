@@ -81,11 +81,6 @@ func (mapa *Map) initializeMap() {
 		}
 		fmt.Println()
 	}
-	fmt.Println("Start nuevoNodos")
-	nuevoNodos := getRealNodes(mapa)
-	for i := 0;i<len(nuevoNodos);i++{
-		fmt.Println(nuevoNodos[i].isExit)
-	}
 	fmt.Println("-----------------------------------------\n" +
 		"--------------End run ------------------\n" +
 		"-----------------------------------------")
@@ -143,6 +138,7 @@ func convertToNodes(matrix [][]int, numSalidas int, width int, height int) [][]*
 				nodos[i][j].position = pixel.V(float64(j), float64(i))
 			} else {
 				nodos[i][j] = NewNode(false, false, 1000)
+				nodos[i][j].position = pixel.V(float64(j), float64(i))
 			}
 		}
 	}

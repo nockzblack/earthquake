@@ -89,7 +89,6 @@ func run(){
 				imd.Color = colornames.Black
 				imd.Push(pixel.V(float64(hposition), float64(vposition)))
 				imd.Push(pixel.V(float64(hposition+horizontalSum), float64(vposition+vertSum)))
-
 				imd.Rectangle( 0)
 			}else if auxMap.nodes[i][j].isExit {
 				imd.Color = colornames.Firebrick
@@ -103,22 +102,26 @@ func run(){
 
 	auxSimulation.runSimulation()
 	//ubicacionPersona := pixel.V(100,100)
-	batch := pixel.NewBatch(&pixel.TrianglesData{}, pic)
+	//batch := pixel.NewBatch(&pixel.TrianglesData{}, pic)
 
 
 	//mat := pixel.IM.Moved(ubicacionPersona)
 	//ubicacionPersona.Y = 0
 	for !win.Closed(){
-		for i := 0; i < len(auxSimulation.people); i++ {
-			if auxSimulation.people[i].isDeath == true {
-				sprite.Draw(batch, pixel.IM.Moved(auxSimulation.people[i].pos.position).Scaled(pixel.ZV, 0.5))
-			}
-		}
 		win.Clear(colornames.Ghostwhite)
 		imd.Draw(win)
-		batch.Draw(win)
+		//batch.Draw(win)
 		//sprite.Draw(win, mat)
 		//persona.Draw(win)
+		for i := 0; i < len(auxSimulation.people); i++ {
+			if auxSimulation.people[i].isDeath == true {
+				x := auxSimulation.people[i].pos.position.X
+				y := float64(len(auxMap.nodes))-1-auxSimulation.people[i].pos.position.Y
+				mat := pixel.IM.Moved(pixel.V(float64(horizontalSum)*x+float64(horizontalSum/2),float64(vertSum)*y+float64(vertSum/2)))
+				sprite.Draw(win, mat.Scaled(pixel.V(float64(horizontalSum)*x+float64(horizontalSum/2),float64(vertSum)*y+float64(vertSum/2)),0.2))
+				println(x, y)
+			}
+		}
 		win.Update()
 	}
 }
