@@ -1,5 +1,6 @@
 package main
 
+
 import (
 	"bufio"
 	"encoding/csv"
@@ -9,61 +10,30 @@ import (
 	"math/rand"
 	"os"
 	"strconv"
-	"sync"
 	"time"
+	//"Node.go"
 )
 
-// Person type
-type Person struct {
-	speed   int
-	ID      string
-	alive   bool
-	current Node
-}
 
-// Node type
-type Node struct {
-	left, front, right,
-	back, nextHop *Node
-	mux              sync.Mutex
-	isExit, isBorder bool
-	stepsToExit      int
-}
-
-// NewNode creates nodes
-func NewNode(isExit bool, isBorder bool, stepsToExit int) *Node {
-	return &Node{isExit: isExit, isBorder: isBorder, stepsToExit: stepsToExit}
-}
-
-<<<<<<< HEAD
-// Map for map
-=======
-func (n *Node) getNext() []*Node{
-	array := make([]*Node, 4)
-	array[0] = n.front
-	array[1] = n.right
-	array[2] = n.back
-	array[3] = n.left
-	return array
-}
-
->>>>>>> f2448b85471a48473addc5ddd8da5c085cdf7a78
+// Map struct
 type Map struct {
 	nodes         [][]*Node
 	height, width int
-	people        [][]Person
 }
 
-/*
-func main(){
+
+
+func initializeMap(exitDoors int, path string) {
+	
 	fmt.Println("-----------------------------------------\n" +
 		"-------------Start run ------------------\n" +
 		"-----------------------------------------")
 
-	mapa := Map{nil, 16, 12, nil}
-	matrix := readFile("/home/alexis/go/src/EarthquakeSimulator/Main/mapitaWrande.csv", mapa.width, mapa.height)
-	mapa.nodes = convertToNodes(matrix, 3, mapa.width, mapa.height)
-	/*for i := 0;i<len(mapa.nodes);i++{
+	mapa := Map{nil, 7, 7}
+	matrix := readFile(path, mapa.width, mapa.height)
+	mapa.nodes = convertToNodes(matrix, exitDoors, mapa.width, mapa.height)
+
+	for i := 0;i<len(mapa.nodes);i++{
 		for j := 0; j < len(mapa.nodes[i]); j++ {
 			if mapa.nodes[i][j] == nil {
 				fmt.Print(0)
@@ -97,12 +67,12 @@ func main(){
 			}
 		}
 		fmt.Println()
-	}*/
+	}
 	fmt.Println("-----------------------------------------\n" +
 		"--------------End run ------------------\n" +
 		"-----------------------------------------")
 }
-*/
+
 
 func readFile(path string, width int, height int) [][]int {
 	// create the arrays needed
@@ -129,11 +99,7 @@ func readFile(path string, width int, height int) [][]int {
 		if err != nil {
 			log.Fatal(err)
 		}
-<<<<<<< HEAD
-		for j := 0; j < height; j++ {
-=======
 		for j := 0; j < width; j++{
->>>>>>> f2448b85471a48473addc5ddd8da5c085cdf7a78
 			matrix[i][j], err = strconv.Atoi(line[j])
 		}
 	}
@@ -214,12 +180,8 @@ func generarSalidas(numSalidas int, width int, height int, nodes [][]*Node) {
 			r = rand.Intn(len(nodes[i]))
 			if nodes[0][r] != nil {
 				nodes[0][r].isExit = true
-<<<<<<< HEAD
-			} else {
-=======
 				distanciasDeSalida(nodes[0][r], nodes)
 			}else{
->>>>>>> f2448b85471a48473addc5ddd8da5c085cdf7a78
 				i--
 				continue
 			}
@@ -227,12 +189,8 @@ func generarSalidas(numSalidas int, width int, height int, nodes [][]*Node) {
 			r = rand.Intn(len(nodes[i]))
 			if nodes[len(nodes)-1][r] != nil {
 				nodes[len(nodes)-1][r].isExit = true
-<<<<<<< HEAD
-			} else {
-=======
 				distanciasDeSalida(nodes[len(nodes)-1][r], nodes)
 			}else{
->>>>>>> f2448b85471a48473addc5ddd8da5c085cdf7a78
 				i--
 				continue
 			}
@@ -240,12 +198,8 @@ func generarSalidas(numSalidas int, width int, height int, nodes [][]*Node) {
 			r = rand.Intn(len(nodes))
 			if nodes[r][0] != nil {
 				nodes[r][0].isExit = true
-<<<<<<< HEAD
-			} else {
-=======
 				distanciasDeSalida(nodes[r][0], nodes)
 			}else{
->>>>>>> f2448b85471a48473addc5ddd8da5c085cdf7a78
 				i--
 				continue
 			}
@@ -253,43 +207,13 @@ func generarSalidas(numSalidas int, width int, height int, nodes [][]*Node) {
 			r = rand.Intn(len(nodes))
 			if nodes[r][len(nodes[i])-1] != nil {
 				nodes[r][len(nodes[i])-1].isExit = true
-<<<<<<< HEAD
-			} else {
-=======
 				distanciasDeSalida(nodes[r][len(nodes[i])-1], nodes)
 			}else{
->>>>>>> f2448b85471a48473addc5ddd8da5c085cdf7a78
 				i--
 				continue
 			}
 		}
 	}
-}
-
-<<<<<<< HEAD
-// Dijkstra for dijis
-func Dijkstra(salida *Node) {
-=======
-type Queue struct {
-	queue []*Node
-	lastPos int
-	current int
-}
->>>>>>> f2448b85471a48473addc5ddd8da5c085cdf7a78
-
-func NewQueue(size, lastPos int, current int) *Queue {
-	queue := make([]*Node, size)
-	return &Queue{queue: queue, lastPos: lastPos, current: current}
-}
-
-func (q *Queue) add(node *Node){
-	q.queue[q.lastPos] = node
-	q.lastPos++
-}
-
-func (q *Queue) pop() *Node{
-	q.current++
-	return q.queue[q.current-1]
 }
 
 func distanciasDeSalida(salida *Node, nodos [][]*Node){

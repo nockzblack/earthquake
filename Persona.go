@@ -1,97 +1,21 @@
 package main
-
+/*
 import (
 	"fmt"
 	"sync"
 	"time"
 )
 
-// MyNode is the class for the path/map
-type MyNode struct {
-	left         *MyNode
-	right        *MyNode
-	back         *MyNode
-	front        *MyNode
-	nextHop      *MyNode
-	isExit       bool
-	isBoder      bool
-	stepsToExtit int
-	name		 int
-	mux          *sync.Mutex
-}
 
-func newMyNode(exit bool, border bool, steps int, name int) *MyNode {
-	auxNode := &MyNode{}
-	auxNode.left = nil
-	auxNode.right = nil
-	auxNode.back = nil
-	auxNode.front = nil
-	auxNode.nextHop = nil
-	auxNode.isExit = exit
-	auxNode.isBoder = border
-	auxNode.stepsToExtit = steps
-	auxNode.name = name
-	auxNode.mux = new(sync.Mutex)
-	return auxNode
-}
-
-// Persona is defined
-type Persona struct {
-	speed  float32
-	id     int
-	isDeath bool
-	pos    *MyNode
-}
-
-func (p *Persona) setPos(MyNode *MyNode) {
-	p.pos = MyNode
-	p.pos.mux.Lock()
-	fmt.Printf("Person %d has locked the MyNode %d\n", p.id, p.pos.name)
-}
-
-func (p *Persona) walk(wg *sync.WaitGroup, exit chan int) {
-	for  {
-		select {
-		case <-exit:
-			fmt.Printf("Person %d has died\n", p.id)
-			defer wg.Done()
-			return 
-			
-		default:
-			if (p.pos.isExit != true) {
-				//fmt.Printf("Person %d is in MyNode %d\n", p.id, p.pos.name)
-				//fmt.Printf("Person %d has started to move to %d\n", p.id, p.pos.nextHop.name)
-		
-				p.pos.nextHop.mux.Lock() // move right foot
-				time.Sleep(time.Duration(p.speed) * time.Second)
-				p.pos.mux.Unlock() // set free the origin MyNode
-				p.pos = p.pos.nextHop
-				//fmt.Printf("Person %d just moved to MyNode %d\n", p.id, p.pos.name)
-			} else {
-				fmt.Printf("Person %d is out of danger\n", p.id)
-				p.pos.mux.Unlock()
-				p.isDeath = false;
-				defer wg.Done()
-				return
-			}
-		}
-	}
-	
-	
-	
-}
 
 func main() {
-	//p := Persona{5, 1, true, nil}
-	fmt.Println("Hello Go")
-	//fmt.Println(p.speed)
 
 	var wg sync.WaitGroup
-	var myMap [100]*MyNode
+	var myMap [100]*Node
 
 	// making MyNodes
 	for index := 0; index < len(myMap); index++ {
-		myMap[index] = newMyNode(false, false, 10, index)
+		myMap[index] = NewNode(false, false, 10)
 		
 	}
 
@@ -138,10 +62,8 @@ func main() {
 	}
 
 	
-	
-
-
-	
 	wg.Wait()
 
 }
+
+*/
