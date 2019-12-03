@@ -5,6 +5,7 @@ import (
 	"bufio"
 	"encoding/csv"
 	"fmt"
+	"github.com/faiface/pixel"
 	"io"
 	"log"
 	"math/rand"
@@ -80,6 +81,11 @@ func (mapa *Map) initializeMap() {
 		}
 		fmt.Println()
 	}
+	fmt.Println("Start nuevoNodos")
+	nuevoNodos := getRealNodes(mapa)
+	for i := 0;i<len(nuevoNodos);i++{
+		fmt.Println(nuevoNodos[i].isExit)
+	}
 	fmt.Println("-----------------------------------------\n" +
 		"--------------End run ------------------\n" +
 		"-----------------------------------------")
@@ -134,6 +140,7 @@ func convertToNodes(matrix [][]int, numSalidas int, width int, height int) [][]*
 			}
 			if i == 0 || j == 0 || i == len(matrix)-1 || j == len(matrix[i])-1 {
 				nodos[i][j] = NewNode(false, true, 1000)
+				nodos[i][j].position = pixel.V(float64(j), float64(i))
 			} else {
 				nodos[i][j] = NewNode(false, false, 1000)
 			}
@@ -251,4 +258,26 @@ func distanciasDeSalida(salida *Node, nodos [][]*Node){
 			}
 		}
 	}
+}
+
+func getRealNodes(p *Map) []*Node{
+	virtualNodes := make([]*Node, p.height*p.width)
+	numNodes := 0
+	for i := 0; i < p.height; i++ {
+		for j := 0; j < p.width; j++ {
+			if p.nodes[i][j] == nil{
+				continue
+			}else if p.nodes[i][j].isExit == true{
+				continue
+			} else{
+				virtualNodes[numNodes] = p.nodes[i][j]
+				numNodes++
+			}
+		}
+	}
+	realNodes := make([]*Node, numNodes-1)
+	for i := 0; i < len(realNodes);i++{
+		realNodes[i] = virtualNodes[i]
+	}
+	return realNodes
 }

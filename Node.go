@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/faiface/pixel"
 	"sync"
 )
 
@@ -13,8 +14,9 @@ type Node struct {
 	nextHop      *Node
 	isExit       bool
 	isBorder     bool
-	stepsToExit int
+	stepsToExit  int
 	mux          *sync.Mutex
+	position 	 pixel.Vec
 }
 
 // NewNode creates nodes
