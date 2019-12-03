@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	initializeMap(10, "/Users/fer/Desktop/AP Final Project/earthquake/mapita.csv")
+	initializeMap(10, "/Users/fer/Desktop/AP Final Project/earthquake/mapitaWrande.csv")
 }

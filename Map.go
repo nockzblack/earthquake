@@ -29,7 +29,7 @@ func initializeMap(exitDoors int, path string) {
 		"-------------Start run ------------------\n" +
 		"-----------------------------------------")
 
-	mapa := Map{nil, 7, 7}
+	mapa := Map{nil, 12, 16}
 	matrix := readFile(path, mapa.width, mapa.height)
 	mapa.nodes = convertToNodes(matrix, exitDoors, mapa.width, mapa.height)
 
