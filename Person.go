@@ -17,7 +17,7 @@ type Persona struct {
 func (p *Persona) setPos(MyNode *Node) {
 	p.pos = MyNode
 	p.pos.mux.Lock()
-	fmt.Printf("Person %d is on node \n", p.id)
+	//fmt.Printf("Person %d is on node \n", p.id)
 }
 
 func (p *Persona) walk(wg *sync.WaitGroup, exit chan int) {

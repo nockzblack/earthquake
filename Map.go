@@ -1,6 +1,5 @@
 package main
 
-
 import (
 	"bufio"
 	"encoding/csv"
@@ -14,77 +13,79 @@ import (
 	//"Node.go"
 )
 
-
 // Map struct
 type Map struct {
 	nodes         [][]*Node
 	height, width int
-	exitDoors int
-	path string
+	exitDoors     int
+	path          string
 }
-
 
 func newMapa(exitDoors int, path string, height int, width int) *Map {
 	return &Map{
-		height: height,
-		width: width,
+		height:    height,
+		width:     width,
 		exitDoors: exitDoors,
-		path: path,
+		path:      path,
 	}
 }
 
-
-
 func (mapa *Map) initializeMap() {
-	
-	fmt.Println("-----------------------------------------\n" +
-		"-------------Start run ------------------\n" +
-		"-----------------------------------------")
+
+	fmt.Println("--------------------------------------------\n" +
+				"---------------- Map run -------------------\n" +
+				"--------------------------------------------\n\n")
 
 	//mapa := Map{nil, 16, 12}
 	matrix := readFile(mapa.path, mapa.width, mapa.height)
 	mapa.nodes = convertToNodes(matrix, mapa.exitDoors, mapa.width, mapa.height)
 
-	for i := 0;i<len(mapa.nodes);i++{
+	/*
+	for i := 0; i < len(mapa.nodes); i++ {
 		for j := 0; j < len(mapa.nodes[i]); j++ {
 			if mapa.nodes[i][j] == nil {
 				fmt.Print(0)
-			}else if mapa.nodes[i][j].isExit{
+			} else if mapa.nodes[i][j].isExit {
 				fmt.Print(2)
-			}else{
+			} else {
 				fmt.Print(1)
 			}
 		}
 		fmt.Println()
 	}
-	for i := 0;i<7;i++{
+	*/
+
+	/*
+	for i := 0; i < 7; i++ {
 		for j := 0; j < 7; j++ {
-			if mapa.nodes[i][j] != nil && mapa.nodes[i][j].isExit{
+			if mapa.nodes[i][j] != nil && mapa.nodes[i][j].isExit {
 				fmt.Println(i, j)
 			}
 		}
 	}
-	for i := 0;i<len(mapa.nodes);i++{
+	*/
+	for i := 0; i < len(mapa.nodes); i++ {
 		for j := 0; j < len(mapa.nodes[i]); j++ {
 			if mapa.nodes[i][j] == nil {
-				fmt.Print("--",0,"-")
-			}else if mapa.nodes[i][j].isExit{
+				fmt.Print("--", 0, "-")
+			} else if mapa.nodes[i][j].isExit {
 				fmt.Print("--S-")
-			}else {
-				if mapa.nodes[i][j] .stepsToExit < 10{
-					fmt.Print("--",mapa.nodes[i][j].stepsToExit,"-")
-				}else{
-					fmt.Print("-",mapa.nodes[i][j].stepsToExit,"-")
+			} else {
+				if mapa.nodes[i][j].stepsToExit < 10 {
+					fmt.Print("--", mapa.nodes[i][j].stepsToExit, "-")
+				} else {
+					fmt.Print("-", mapa.nodes[i][j].stepsToExit, "-")
 				}
 			}
 		}
 		fmt.Println()
 	}
-	fmt.Println("-----------------------------------------\n" +
-		"--------------End run ------------------\n" +
-		"-----------------------------------------")
-}
 
+	fmt.Print("\n\n")
+	//fmt.Println("-----------------------------------------\n" +
+	//	"--------------End run ------------------\n" +
+	//	"-----------------------------------------")
+}
 
 func readFile(path string, width int, height int) [][]int {
 	// create the arrays needed
@@ -111,7 +112,7 @@ func readFile(path string, width int, height int) [][]int {
 		if err != nil {
 			log.Fatal(err)
 		}
-		for j := 0; j < width; j++{
+		for j := 0; j < width; j++ {
 			matrix[i][j], err = strconv.Atoi(line[j])
 		}
 	}
@@ -193,7 +194,7 @@ func generarSalidas(numSalidas int, width int, height int, nodes [][]*Node) {
 			if nodes[0][r] != nil {
 				nodes[0][r].isExit = true
 				distanciasDeSalida(nodes[0][r], nodes)
-			}else{
+			} else {
 				i--
 				continue
 			}
@@ -202,7 +203,7 @@ func generarSalidas(numSalidas int, width int, height int, nodes [][]*Node) {
 			if nodes[len(nodes)-1][r] != nil {
 				nodes[len(nodes)-1][r].isExit = true
 				distanciasDeSalida(nodes[len(nodes)-1][r], nodes)
-			}else{
+			} else {
 				i--
 				continue
 			}
@@ -211,7 +212,7 @@ func generarSalidas(numSalidas int, width int, height int, nodes [][]*Node) {
 			if nodes[r][0] != nil {
 				nodes[r][0].isExit = true
 				distanciasDeSalida(nodes[r][0], nodes)
-			}else{
+			} else {
 				i--
 				continue
 			}
@@ -220,7 +221,7 @@ func generarSalidas(numSalidas int, width int, height int, nodes [][]*Node) {
 			if nodes[r][len(nodes[i])-1] != nil {
 				nodes[r][len(nodes[i])-1].isExit = true
 				distanciasDeSalida(nodes[r][len(nodes[i])-1], nodes)
-			}else{
+			} else {
 				i--
 				continue
 			}
@@ -228,27 +229,49 @@ func generarSalidas(numSalidas int, width int, height int, nodes [][]*Node) {
 	}
 }
 
-func distanciasDeSalida(salida *Node, nodos [][]*Node){
+func distanciasDeSalida(salida *Node, nodos [][]*Node) {
 	cola := NewQueue(10000, 0, 0)
 	currentDist := 0
 	salida.stepsToExit = currentDist
 	cola.add(salida)
-	for cola.current < cola.lastPos{
+	for cola.current < cola.lastPos {
 		currentNode := cola.pop()
 		// Incrementar currentDist
-		if currentDist < currentNode.stepsToExit{
+		if currentDist < currentNode.stepsToExit {
 			currentDist++
 		}
 		nextNodes := currentNode.getNext()
-		for i := 0; i < 4; i++{
-			if nextNodes[i] == nil{
+		for i := 0; i < 4; i++ {
+			if nextNodes[i] == nil {
 				continue
 			}
-			if currentDist < nextNodes[i].stepsToExit{
-				nextNodes[i].stepsToExit = currentDist+1
+			if currentDist < nextNodes[i].stepsToExit {
+				nextNodes[i].stepsToExit = currentDist + 1
 				nextNodes[i].nextHop = currentNode
 				cola.add(nextNodes[i])
 			}
 		}
 	}
+}
+
+func (mapa *Map) getRealNodes() []*Node {
+	virtualNodes := make([]*Node, mapa.height*mapa.width)
+	numNodes := 0
+	for i := 0; i < mapa.height; i++ {
+		for j := 0; j < mapa.width; j++ {
+			if mapa.nodes[i][j] == nil{
+				continue
+			}else if mapa.nodes[i][j].isExit == true{
+				continue
+			} else{
+				virtualNodes[numNodes] = mapa.nodes[i][j]
+				numNodes++
+			}
+		}
+	}
+	realNodes := make([]*Node, numNodes-1)
+	for i := 0; i < len(realNodes);i++{
+		realNodes[i] = virtualNodes[i]
+	}
+	return realNodes
 }

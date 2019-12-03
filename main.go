@@ -27,7 +27,14 @@ func main() {
 			auxMap := newMapa(10, path, 16, 12)
 			auxMap.initializeMap()
 			auxSimulation := newPersonManager(nPeople, timeout, auxMap)
-			auxSimulation.runSimulation()
+
+			if auxSimulation == nil {
+				fmt.Println("imposible to run a simulation")
+			} else {
+				auxSimulation.runSimulation()
+				auxSimulation.damageReport()
+			}
+
 		}
 	}
 
