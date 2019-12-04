@@ -1,5 +1,6 @@
 
 ### Earthquake Simulator Architecture
+--------------------------------------
 
 This doc prentends to illustrate how the earthquake simulator is build.
 
@@ -8,7 +9,7 @@ This doc prentends to illustrate how the earthquake simulator is build.
 - [Fernando benavides](https://github.com/nockzblack)
 - [Alexis Mendoza](https://github.com/AlexisFreud)
 
-### Libreries
+### Libraries
 ---------------
 - [Pixel](https://github.com/faiface/pixel/)
 
