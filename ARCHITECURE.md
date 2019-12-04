@@ -3,7 +3,7 @@
 
 This doc prentends to illustrate how the earthquake simulator is build.
 
-[Architecture Diagram](earthquakeArchitecture.png)
+![Architecture Diagram](earthquakeArchitecture.png)
 
 As you can see there is a main file wich is the one that handles the user input from command line and validates it.
 
