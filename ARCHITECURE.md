@@ -10,7 +10,7 @@ This doc prentends to illustrate how the earthquake simulator is build.
 
 ### Libreries
 ---------------
-- [Pixel] (https://github.com/faiface/pixel/)
+- [Pixel](https://github.com/faiface/pixel/)
 
 ### Diagram
 ---------------
