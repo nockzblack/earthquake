@@ -18,7 +18,7 @@ type PersonManager struct {
 
 func (pm *PersonManager) initPeople() {
 	for index := 0; index < len(pm.people); index++ {
-		pm.people[index] = Persona{float32(index /20), index, true, nil}
+		pm.people[index] = Persona{float32(index /10), index, true, nil}
 	}
 }
 

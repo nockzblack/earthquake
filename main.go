@@ -24,21 +24,22 @@ func main() {
 
 func run() {
 	fmt.Println(args)
-	if len(args) != 2 {
+	if len(args) != 3 {
 		fmt.Println("parameters are wrong")
-		fmt.Println("use: ./binaryName nPeople secondsToFinish")
-		fmt.Println("example: ./earthqueake 5 10")
+		fmt.Println("use: ./binaryName nPeople secondsToFinish nExits")
+		fmt.Println("example: ./earthqueake 5 10 10")
 	} else {
 
 		nPeople, errPeople := strconv.Atoi(args[0])
 		timeout, errTimeout := strconv.Atoi(args[1])
+		exits, errTimeout := strconv.Atoi(args[2])
 
 		if errTimeout != nil || errPeople != nil {
 			fmt.Println("There is some erros on parameters")
-			fmt.Println("try to run like: ./earthqueake 5 10")
+			fmt.Println("try to run like: ./earthqueake 5 10 10")
 		} else {
 			path := "mapitaWrande.csv"
-			auxMap := newMapa(10, path, 16, 12)
+			auxMap := newMapa(exits, path, 16, 12)
 			auxMap.initializeMap()
 			auxSimulation := newPersonManager(nPeople, timeout, auxMap)
 
