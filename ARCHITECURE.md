@@ -4,13 +4,16 @@
 This doc prentends to illustrate how the earthquake simulator is build.
 
 ### Team
-=======
+------------
 - [Fernando benavides](https://github.com/nockzblack)
 - [Alexis Mendoza](https://github.com/AlexisFreud)
 
 ### Libreries
-===========
+---------------
 - [Pixel] (https://github.com/faiface/pixel/)
+
+### Diagram
+---------------
 
 ![Architecture Diagram](earthquakeArchitecture.png)
 
