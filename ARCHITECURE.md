@@ -3,6 +3,15 @@
 
 This doc prentends to illustrate how the earthquake simulator is build.
 
+### Team
+=======
+- [Fernando benavides] (https://github.com/nockzblack)
+- [Alexis Mendoza] (https://github.com/AlexisFreud)
+
+### Libreries
+===========
+- [Pixel] (https://github.com/faiface/pixel/)
+
 ![Architecture Diagram](earthquakeArchitecture.png)
 
 As you can see there is a main file wich is the one that handles the user input from command line and validates it.
@@ -14,5 +23,8 @@ The map loads the map from a .csv file and also needs its own queue to operate. 
 The person manager is the responsible for creating the number of people that the user indecated and also set them in a beginning pos (a node).
 
 The person manager is the one that handles the simulation and each person inits his way to the exit.
+
+
+
 
 
