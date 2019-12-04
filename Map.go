@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"encoding/csv"
 	"fmt"
+	"github.com/faiface/pixel"
 	"io"
 	"log"
 	"math/rand"
@@ -135,8 +136,10 @@ func convertToNodes(matrix [][]int, numSalidas int, width int, height int) [][]*
 			}
 			if i == 0 || j == 0 || i == len(matrix)-1 || j == len(matrix[i])-1 {
 				nodos[i][j] = NewNode(false, true, 1000)
+				nodos[i][j].position = pixel.V(float64(j), float64(i))
 			} else {
 				nodos[i][j] = NewNode(false, false, 1000)
+				nodos[i][j].position = pixel.V(float64(j), float64(i))
 			}
 		}
 	}

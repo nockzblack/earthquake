@@ -66,7 +66,7 @@ func (pm *PersonManager) runSimulation() {
 	pm.setPeoplePos()
 	go pm.startTimer(pm.seconds)
 	pm.startWalking()
-	pm.wg.Wait()
+	//pm.wg.Wait()
 }
 
 func newPersonManager(nPeople int, seconds int, mapa *Map) *PersonManager {
@@ -96,7 +96,7 @@ func (pm *PersonManager) damageReport() {
 
 	survivors = len(pm.people) - deadPeople
 
-	fmt.Printf("\n\nOn simulation with %d people and a timeout of %d\n", len(pm.people), pm.seconds)
+	fmt.Printf("\n\nOn simulation with %d people and a timeout of %d seconds \n", len(pm.people), pm.seconds)
 	fmt.Printf("%d people have survided and %d have died\n", deadPeople, survivors)
 
 }
