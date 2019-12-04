@@ -16,3 +16,7 @@ The person manager is the responsible for creating the number of people that the
 The person manager is the one that handles the simulation and each person inits his way to the exit.
 
 
+
+![Step Diagram](makeStep.png)
+
+And image says more that 1000 words
