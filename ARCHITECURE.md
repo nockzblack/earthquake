@@ -32,4 +32,4 @@ The person manager is the one that handles the simulation and each person inits 
 
 ![Step Diagram](makeStep.png)
 
-And image says more that 1000 words
+An image says more that 1000 words
